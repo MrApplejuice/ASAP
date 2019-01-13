@@ -41,8 +41,8 @@ RUN mkdir /tmp/pugixml && cd /tmp/pugixml \
 RUN apt-get install -y autoconf libcairo-dev libgdk-pixbuf2.0-dev libxml2-dev
 RUN mkdir /tmp/openslide && cd /tmp/openslide \
         && git clone https://github.com/openslide/openslide.git \
-        && git checkout v3.4.1 \
         && cd openslide \
+        && git checkout v3.4.1 \
         && autoreconf -i && ./configure \
         && make -j16 && make install \
         && cd /tmp && rm -rf openslide
