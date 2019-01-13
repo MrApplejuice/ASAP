@@ -3,52 +3,52 @@ option(BUILD_MULTIRESOLUTIONIMAGEINTERFACE_VSI_SUPPORT "Builds support for Olymp
 set(MULTIRESOLUTIONIMAGEINTERFACE_HS
     MultiResolutionImageReader.h 
     MultiResolutionImageWriter.h 
-	AperioSVSWriter.h
+  AperioSVSWriter.h
     TIFFImage.h
-	TIFFImageFactory.h
+  TIFFImageFactory.h
     MultiResolutionImage.h
-	MultiResolutionImageFactory.h
+  MultiResolutionImageFactory.h
     TileCache.h
     LIFImage.h
-	LIFImageFactory.h
+  LIFImageFactory.h
 )
 
 set(MULTIRESOLUTIONIMAGEINTERFACE_SRCS 
     MultiResolutionImageReader.cpp 
     MultiResolutionImageWriter.cpp 
-	AperioSVSWriter.cpp
+  AperioSVSWriter.cpp
     TIFFImage.cpp
     MultiResolutionImage.cpp
-	MultiResolutionImageFactory.cpp
+  MultiResolutionImageFactory.cpp
     MultiResolutionImage.cpp
-	TIFFImageFactory.cpp
+  TIFFImageFactory.cpp
     TileCache.cpp
     LIFImage.cpp
-	LIFImageFactory.cpp
+  LIFImageFactory.cpp
 )
 
 set(OPENSLIDE_SUPPORT_HS
     OpenSlideImage.h
-	OpenSlideImageFactory.h
+  OpenSlideImageFactory.h
 )
 
 set(VSI_SUPPORT_HS
     VSIImage.h
-	VSIImageFactory.h
+  VSIImageFactory.h
 )
 
 set(OPENSLIDE_SUPPORT_SRCS
     OpenSlideImage.cpp
-	OpenSlideImageFactory.cpp
+  OpenSlideImageFactory.cpp
 )
 
 set(VSI_SUPPORT_SRCS
     VSIImage.cpp
-	VSIImageFactory.cpp
+  VSIImageFactory.cpp
 )
 
 if(WIN32)
-add_definitions(-DNOMINMAX)
+  add_definitions(-DNOMINMAX)
 endif(WIN32)
 
 add_library(jpeg2kcodec SHARED JPEG2000Codec.h JPEG2000Codec.cpp)
@@ -70,7 +70,7 @@ endif(BUILD_MULTIRESOLUTIONIMAGEINTERFACE_VSI_SUPPORT)
 add_library(multiresolutionimageinterface SHARED ${MULTIRESOLUTIONIMAGEINTERFACE_SRCS} ${MULTIRESOLUTIONIMAGEINTERFACE_HS} ${VSI_SOURCE_HS} ${VSI_SOURCE_SRCS})
 target_include_directories(multiresolutionimageinterface PUBLIC $<BUILD_INTERFACE:${DIAGPathology_SOURCE_DIR}> $<INSTALL_INTERFACE:include> $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}> $<INSTALL_INTERFACE:include/multiresolutionimageinterface> PRIVATE ${PUGIXML_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} ${TIFF_INCLUDE_DIR})
 target_link_libraries(multiresolutionimageinterface PUBLIC core PRIVATE jpeg2kcodec libtiff Boost::disable_autolinking Boost::thread)
-target_compile_definitions(multiresolutionimageinterface PRIVATE HAS_MULTIRESOLUTIONIMAGEINTERFACE_VSI_SUPPORT PUGIXML_HEADER_ONLY)
+target_compile_definitions(multiresolutionimageinterface PRIVATE HAS_MULTIRESOLUTIONIMAGEINTERFACE_VSI_SUPPORT) # PUGIXML_HEADER_ONLY
 generate_export_header(multiresolutionimageinterface)
 set_target_properties(multiresolutionimageinterface PROPERTIES DEBUG_POSTFIX _d)
 
@@ -109,40 +109,40 @@ if(WRAP_MULTIRESOLUTIONIMAGEINTERFACE_PYTHON)
     mark_as_advanced(SWIG_DIR SWIG_VERSION)
   endif(SWIG_FOUND)
 
-	# Wrapping part for Python
-	if (WRAP_MULTIRESOLUTIONIMAGEINTERFACE_PYTHON AND SWIG_FOUND)   
-	  # Set module extension, platform specific
-	  if(WIN32)
-		set(module_extension ".pyd")
-	  elseif(APPLE)
-	    set(module_extension ".dylib")
-	  else(WIN32)
-		set(module_extension ".so")  
-	  endif(WIN32)
-	  
-	  set_source_files_properties(multiresolutionimageinterface.i PROPERTIES CPLUSPLUS ON)
-	  set_source_files_properties(multiresolutionimageinterface.i PROPERTIES SWIG_FLAGS "-builtin")
+  # Wrapping part for Python
+  if (WRAP_MULTIRESOLUTIONIMAGEINTERFACE_PYTHON AND SWIG_FOUND)   
+    # Set module extension, platform specific
+    if(WIN32)
+    set(module_extension ".pyd")
+    elseif(APPLE)
+      set(module_extension ".dylib")
+    else(WIN32)
+    set(module_extension ".so")  
+    endif(WIN32)
+    
+    set_source_files_properties(multiresolutionimageinterface.i PROPERTIES CPLUSPLUS ON)
+    set_source_files_properties(multiresolutionimageinterface.i PROPERTIES SWIG_FLAGS "-builtin")
       if(PYTHONLIBS_VERSION_STRING MATCHES "3.?")
-	      set_property(SOURCE multiresolutionimageinterface.i PROPERTY SWIG_FLAGS "-py3")
+        set_property(SOURCE multiresolutionimageinterface.i PROPERTY SWIG_FLAGS "-py3")
       endif(PYTHONLIBS_VERSION_STRING MATCHES "3.?")
 
-	  swig_add_library(multiresolutionimageinterface LANGUAGE python SOURCES multiresolutionimageinterface.i)
-	  swig_link_libraries(multiresolutionimageinterface multiresolutionimageinterface annotation core) 
-	  swig_link_libraries(multiresolutionimageinterface ${PYTHON_LIBRARIES} ${PYTHON_DEBUG_LIBRARIES})
+    swig_add_library(multiresolutionimageinterface LANGUAGE python SOURCES multiresolutionimageinterface.i)
+    swig_link_libraries(multiresolutionimageinterface multiresolutionimageinterface annotation core) 
+    swig_link_libraries(multiresolutionimageinterface ${PYTHON_LIBRARIES} ${PYTHON_DEBUG_LIBRARIES})
       target_include_directories(${SWIG_MODULE_multiresolutionimageinterface_REAL_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${Boost_INCLUDE_DIRS} ${DIAGPathology_BINARY_DIR}/annotation ${PYTHON_INCLUDE_DIR} ${PYTHON_NUMPY_INCLUDE_DIR})
-	  set_target_properties(${SWIG_MODULE_multiresolutionimageinterface_REAL_NAME} PROPERTIES FOLDER multiresolutionimageinterface)
-	  set_target_properties(${SWIG_MODULE_multiresolutionimageinterface_REAL_NAME} PROPERTIES DEBUG_POSTFIX _d)
-	  
-	  # Cross-platform copying and installing instructions
-	  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/multiresolutionimageinterface.py DESTINATION bin)
+    set_target_properties(${SWIG_MODULE_multiresolutionimageinterface_REAL_NAME} PROPERTIES FOLDER multiresolutionimageinterface)
+    set_target_properties(${SWIG_MODULE_multiresolutionimageinterface_REAL_NAME} PROPERTIES DEBUG_POSTFIX _d)
+    
+    # Cross-platform copying and installing instructions
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/multiresolutionimageinterface.py DESTINATION bin)
 
       install(TARGETS ${SWIG_MODULE_multiresolutionimageinterface_REAL_NAME}
-	  	EXPORT asap-targets
+      EXPORT asap-targets
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION bin
         ARCHIVE DESTINATION lib
       )
-	endif(WRAP_MULTIRESOLUTIONIMAGEINTERFACE_PYTHON AND SWIG_FOUND)  
+  endif(WRAP_MULTIRESOLUTIONIMAGEINTERFACE_PYTHON AND SWIG_FOUND)  
 endif(WRAP_MULTIRESOLUTIONIMAGEINTERFACE_PYTHON)
 
 install(FILES ${MULTIRESOLUTIONIMAGEINTERFACE_HS} DESTINATION include/multiresolutionimageinterface)

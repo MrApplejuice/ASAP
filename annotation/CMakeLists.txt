@@ -25,7 +25,7 @@ set(ANNOTATION_SOURCE
 )
 
 add_library(annotation SHARED ${ANNOTATION_SOURCE} ${ANNOTATION_HEADERS})
-target_compile_definitions(annotation PRIVATE "PUGIXML_HEADER_ONLY")
+#target_compile_definitions(annotation PRIVATE "PUGIXML_HEADER_ONLY")
 generate_export_header(annotation)
 get_target_property(PUGIXML_INCLUDE_DIR pugixml INTERFACE_INCLUDE_DIRECTORIES)
 target_include_directories(annotation PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}> $<INSTALL_INTERFACE:include/annotation> PRIVATE ${DIAGPathology_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${Boost_INCLUDE_DIRS} ${PUGIXML_INCLUDE_DIR})

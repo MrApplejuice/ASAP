@@ -5,8 +5,15 @@
 #  OPENSLIDE_LIBRARY, libraries to link against to use OPENSLIDE.
 #  OPENSLIDE_FOUND, If false, do not try to use OPENSLIDE.
 
-find_path(OPENSLIDE_INCLUDE_DIR openslide.h)
-find_library(OPENSLIDE_LIBRARY NAMES openslide)
+find_path(
+    OPENSLIDE_INCLUDE_DIR
+    NAMES openslide.h
+    PATHS /usr/include/ /usr/local/include/
+    PATH_SUFFIXES openslide/)
+find_library(
+    OPENSLIDE_LIBRARY 
+    NAMES openslide
+    PATHS /usr/lib/ /usr/local/lib/)
 
 # handle the QUIETLY and REQUIRED arguments and set TIFF_FOUND to TRUE if
 # all listed variables are TRUE
