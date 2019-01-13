@@ -5,8 +5,21 @@
 #  DCMTKJPEG_LIBRARY, libraries to link against to use DCMTKJPEG.
 #  DCMTKJPEG_FOUND, If false, do not try to use DCMTKJPEG.
 
-find_path(DCMTKJPEG_INCLUDE_DIR dcmjpeg/libijg8/jconfig8.h)
-find_library(DCMTKJPEG_LIBRARY NAMES ijg8)
+find_path(DCMTKJPEG_INCLUDE_DIR 
+  NAMES 
+    jconfig8.h
+    djencode.h
+  PATHS
+    /usr/include/
+    /usr/local/include/
+  PATH_SUFFIXES 
+    dcmjpeg/libijg8/
+    dcmtk/dcmjpeg/)
+find_library(DCMTKJPEG_LIBRARY
+  NAMES ijg8
+  PATHS
+    /usr/lib/
+    /usr/local/lib/)
 
 # handle the QUIETLY and REQUIRED arguments and set TIFF_FOUND to TRUE if
 # all listed variables are TRUE

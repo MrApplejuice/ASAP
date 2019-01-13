@@ -3,28 +3,28 @@ option(BUILD_MULTIRESOLUTIONIMAGEINTERFACE_VSI_SUPPORT "Builds support for Olymp
 set(MULTIRESOLUTIONIMAGEINTERFACE_HS
     MultiResolutionImageReader.h 
     MultiResolutionImageWriter.h 
-  AperioSVSWriter.h
+    AperioSVSWriter.h
     TIFFImage.h
-  TIFFImageFactory.h
+    TIFFImageFactory.h
     MultiResolutionImage.h
-  MultiResolutionImageFactory.h
+    MultiResolutionImageFactory.h
     TileCache.h
     LIFImage.h
-  LIFImageFactory.h
+    LIFImageFactory.h
 )
 
 set(MULTIRESOLUTIONIMAGEINTERFACE_SRCS 
     MultiResolutionImageReader.cpp 
     MultiResolutionImageWriter.cpp 
-  AperioSVSWriter.cpp
+    AperioSVSWriter.cpp
     TIFFImage.cpp
     MultiResolutionImage.cpp
-  MultiResolutionImageFactory.cpp
+    MultiResolutionImageFactory.cpp
     MultiResolutionImage.cpp
-  TIFFImageFactory.cpp
+    TIFFImageFactory.cpp
     TileCache.cpp
     LIFImage.cpp
-  LIFImageFactory.cpp
+    LIFImageFactory.cpp
 )
 
 set(OPENSLIDE_SUPPORT_HS
@@ -33,7 +33,7 @@ set(OPENSLIDE_SUPPORT_HS
 )
 
 set(VSI_SUPPORT_HS
-    VSIImage.h
+  VSIImage.h
   VSIImageFactory.h
 )
 
@@ -58,7 +58,7 @@ target_link_libraries(jpeg2kcodec PRIVATE openjp2)
 target_include_directories(jpeg2kcodec PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}> $<INSTALL_INTERFACE:include/multiresolutionimageinterface> PRIVATE ${DIAGPathology_SOURCE_DIR} ${DIAGPathology_BINARY_DIR}/core ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${OPENJPEG_INCLUDE_DIRS})
 
 # Get info from PugiXML for the headers
-get_target_property(PUGIXML_INCLUDE_DIR pugixml INTERFACE_INCLUDE_DIRECTORIES)
+#get_target_property(PUGIXML_INCLUDE_DIR pugixml INTERFACE_INCLUDE_DIRECTORIES)
 
 if(BUILD_MULTIRESOLUTIONIMAGEINTERFACE_VSI_SUPPORT)
   # Required for lossless JPEG compression used in VSIs
@@ -68,8 +68,25 @@ if(BUILD_MULTIRESOLUTIONIMAGEINTERFACE_VSI_SUPPORT)
 endif(BUILD_MULTIRESOLUTIONIMAGEINTERFACE_VSI_SUPPORT)
 
 add_library(multiresolutionimageinterface SHARED ${MULTIRESOLUTIONIMAGEINTERFACE_SRCS} ${MULTIRESOLUTIONIMAGEINTERFACE_HS} ${VSI_SOURCE_HS} ${VSI_SOURCE_SRCS})
-target_include_directories(multiresolutionimageinterface PUBLIC $<BUILD_INTERFACE:${DIAGPathology_SOURCE_DIR}> $<INSTALL_INTERFACE:include> $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}> $<INSTALL_INTERFACE:include/multiresolutionimageinterface> PRIVATE ${PUGIXML_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} ${TIFF_INCLUDE_DIR})
-target_link_libraries(multiresolutionimageinterface PUBLIC core PRIVATE jpeg2kcodec libtiff Boost::disable_autolinking Boost::thread)
+target_include_directories(multiresolutionimageinterface
+  PUBLIC 
+    $<BUILD_INTERFACE:${DIAGPathology_SOURCE_DIR}>
+    $<INSTALL_INTERFACE:include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    $<INSTALL_INTERFACE:include/multiresolutionimageinterface>
+  PRIVATE
+    ${PUGIXML_INCLUDE_DIR}
+    ${Boost_INCLUDE_DIRS}
+    ${TIFF_INCLUDE_DIR})
+target_link_libraries(multiresolutionimageinterface
+  PUBLIC 
+    core
+    pugixml
+  PRIVATE
+    jpeg2kcodec
+    libtiff
+    Boost::disable_autolinking
+    Boost::thread)
 target_compile_definitions(multiresolutionimageinterface PRIVATE HAS_MULTIRESOLUTIONIMAGEINTERFACE_VSI_SUPPORT) # PUGIXML_HEADER_ONLY
 generate_export_header(multiresolutionimageinterface)
 set_target_properties(multiresolutionimageinterface PROPERTIES DEBUG_POSTFIX _d)

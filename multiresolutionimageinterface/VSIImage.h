@@ -9,7 +9,7 @@ class MULTIRESOLUTIONIMAGEINTERFACE_EXPORT VSIImage : public MultiResolutionImag
 
 public:
   VSIImage();
-  ~VSIImage();
+  virtual ~VSIImage();
 
   bool initializeType(const std::string& imagePath);
 
