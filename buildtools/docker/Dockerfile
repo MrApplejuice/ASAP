@@ -52,3 +52,5 @@ RUN mkdir /tmp/openslide && cd /tmp/openslide \
         && autoreconf -i && ./configure \
         && make -j16 && make install \
         && cd /tmp && rm -rf openslide
+
+RUN apt-get install -y swig3.0
