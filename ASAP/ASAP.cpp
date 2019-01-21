@@ -26,7 +26,7 @@
 #include <QSettings>
 #include <QFileInfo>
 #include <QStandardPaths>
-#include <QtUiTools>
+#include <QUiLoader>
 #include <QTreeWidget>
 
 #include "ASAP.h"

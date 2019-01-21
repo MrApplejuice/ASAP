@@ -28,6 +28,8 @@ RUN cd /tmp && \
 RUN ldconfig -v
 
 RUN apt-get install -y cmake
+RUN apt-get install -y qt5-default qttools5-dev
+
 RUN apt-get install -y libboost-all-dev libopenjp2-7-dev libtiff-dev libdcmtk-dev
 
 # Slip parallel installing of opencv in here ... a bit messy but way faster

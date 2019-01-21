@@ -31,7 +31,7 @@ set(SOURCE
     QtProgressMonitor.cpp
 )
 
-find_package(Qt5 COMPONENTS Core Widgets Gui OpenGL UiTools)
+find_package(Qt5 COMPONENTS Core Widgets Gui OpenGL UiTools Designer)
 set(RESOURCE
     resources/ASAP_resources.qrc
 )
@@ -42,9 +42,25 @@ generate_export_header(ASAPLib)
 
 add_executable(ASAP WIN32 main.cpp ASAP.rc ${RESOURCE_ADDED})
 
-target_link_libraries(ASAPLib PUBLIC basicfilters PRIVATE multiresolutionimageinterface Qt5::Widgets Qt5::Core Qt5::OpenGL Qt5::UiTools)
-target_include_directories(ASAPLib PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}> $<INSTALL_INTERFACE:include/ASAP> $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}> $<INSTALL_INTERFACE:include/ASAP>)
-target_link_libraries(ASAP PRIVATE ASAPLib Qt5::Core Qt5::Widgets)
+target_link_libraries(ASAPLib
+    PUBLIC 
+        basicfilters
+        Qt5::Widgets
+        Qt5::Core
+        Qt5::Designer
+        Qt5::OpenGL
+        Qt5::UiTools
+    PRIVATE
+        multiresolutionimageinterface)
+target_include_directories(ASAPLib
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:include/ASAP>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+        $<INSTALL_INTERFACE:include/ASAP>)
+target_link_libraries(ASAP 
+    PRIVATE
+        ASAPLib)
 set_target_properties(ASAPLib PROPERTIES DEBUG_POSTFIX _d)
 set_target_properties(ASAP PROPERTIES DEBUG_POSTFIX _d)
 
